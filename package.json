@@ -7,6 +7,7 @@
   "type": "module",
   "main": "main.ja",
   "scripts": {
+    "start": "node ./src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
