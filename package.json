@@ -12,5 +12,11 @@
   "dependencies": {
     "@kubis/input-scanner": "^1.1.0",
     "glyphalyze": "github:Twodrop/glyphalyze"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@lnu/eslint-config": "^3.0.1",
+    "eslint": "^10.12.0",
+    "eslint-plugin-regexp": "^3.3.1"
   }
 }
