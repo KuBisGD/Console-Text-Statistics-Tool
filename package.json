@@ -8,5 +8,9 @@
   "main": "main.ja",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@kubis/input-scanner": "^1.1.0",
+    "glyphalyze": "github:Twodrop/glyphalyze"
   }
 }
