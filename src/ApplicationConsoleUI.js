@@ -1,5 +1,6 @@
 import Scanner from '@kubis/input-scanner'
 import TextDataStorage from './TextDataStorage.js'
+import StatisticsConsoleUI from './StatisticsConsoleUI.js'
 
 class ApplicationConsoleUI {
   #content = null
@@ -8,6 +9,7 @@ class ApplicationConsoleUI {
   constructor (input, output, savesFilePath) {
     this.#dataStorage = new TextDataStorage(savesFilePath)
     this.#scanner = new Scanner({ input, output })
+    this.#scanner.useBuffer('app')
   }
 
   async start () {
@@ -50,7 +52,7 @@ class ApplicationConsoleUI {
       await this.#loadFromInput()
       break
     case 3:
-      
+      await this.#runTextStatistics()
       break
     case 4:
       await this.#menuSaveText()
@@ -125,58 +127,17 @@ class ApplicationConsoleUI {
       .pauseUntilNext()
   }
 
-  /**
-   * The menu for text stats.
-   */
-  async #menuTextStats () {
-    const maxOptionValue = this.#renderTextStatsMenu()
-    const option = await this.#selectMenuOption(7)
-    await this.#actionTextStatsMenu(option)
-  }
-
-  /**
-   * Renders the text stats menu options to the output.
-   * 
-   * @returns {number} The amount of options in the menu.
-   */
-  #renderTextStatsMenu () {
-    this.#scanner.prompt('1: Character count\n')
-    this.#scanner.prompt('2: Word count\n')
-    this.#scanner.prompt('3: Sentence count\n')
-    this.#scanner.prompt('4: Word frequency\n')
-    this.#scanner.prompt('5: Average word length\n')
-    this.#scanner.prompt('6: Average sentence length\n')
-    this.#scanner.prompt('7: Text time to read\n')
-    this.#scanner.prompt('0: Back\n')
-    return 7
-  }
-
-  /**
-   * Handles the action for the text stats menu.
-   * 
-   * @param {number} option The option to be selected.
-   * @returns {void}
-   */
-  async #actionTextStatsMenu (option) {
-    switch (option) {
-    case 1:
-      break
-    case 2:
-      break
-    case 3:
-      break
-    case 4:
-      break
-    case 5:
-      break
-    case 6:
-      break
-    case 7:
-      break
-    case 0:
+  async #runTextStatistics () {
+    if (this.#content === null) {
+      await this.#scanner.prompt('No content loaded, press enter to return...\n')
+        .pauseUntilNext()
       return
-      break
     }
+
+    this.#scanner.useBuffer('test-stats')
+    const statsUI = new StatisticsConsoleUI(this.#scanner, this.#content)
+    await statsUI.start()
+    this.#scanner.useBuffer('app')
   }
 
   /**
