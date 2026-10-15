@@ -12,11 +12,13 @@ class ApplicationConsoleUI {
     this.#scanner.useBuffer('app')
   }
 
+  /**
+   * Starts the Application UI.
+   */
   async start () {
     while (true) {
       await this.#menuStart()
     }
-    
   }
 
   /**
@@ -28,6 +30,11 @@ class ApplicationConsoleUI {
     await this.#actionStartMenu(option)
   }
 
+  /**
+   * Renders the men menu options.
+   * 
+   * @returns {number} Amount of options in the menu.
+   */
   #renderStartMenu () {
     this.#scanner.prompt('1: Load text form file\n')
     this.#scanner.prompt('2: Manual line input\n')
@@ -46,7 +53,7 @@ class ApplicationConsoleUI {
   async #actionStartMenu (option) {
     switch (option) {
     case 1:
-      await this.#loadFromFileMenu()
+      await this.#menuLoadSavedFile()
       break
     case 2:
       await this.#loadFromInput()
@@ -69,7 +76,7 @@ class ApplicationConsoleUI {
    * Gets a user input to be used in selecting a menu option.
    * 
    * @param {number} maxOptionValue The max number to be a valid input.
-   * @returns {number} The selected option
+   * @returns {number} The selected option.
    */
   async #selectMenuOption (maxOptionValue) {
     while (true) {
@@ -83,8 +90,23 @@ class ApplicationConsoleUI {
     }
   }
 
-  async #loadFromFileMenu () {
+  /**
+   * Menu for loading a saved file.
+   */
+  async #menuLoadSavedFile () {
     const files = await this.#dataStorage.getSavedFileNames()
+    const maxOptionValue = this.#renderSavedFilesMenu(files)
+    const option = await this.#selectMenuOption(maxOptionValue)
+    await this.#actionLoadSavedFilesMenu(option, files)
+  }
+
+  /**
+   * Renders the file select menu
+   * 
+   * @param {string[]} files List of saved file names.
+   * @returns {number} The amount of options in the menu.
+   */
+  #renderSavedFilesMenu (files) {
     if (files.length === 0) {
       this.#scanner.prompt('No saves found...\n')
     } else {
@@ -93,17 +115,24 @@ class ApplicationConsoleUI {
       }
     }
     this.#scanner.prompt('0: Back\n')
-    const option = await this.#selectMenuOption(files.length)
+    return files.length
+  }
+
+  /**
+   * Loads the content from a saved file
+   * 
+   * @returns {void}
+   */
+  async #actionLoadSavedFilesMenu (option, files) {
     if (option === 0) {
       return
-    } else {
-      
-      const content = await this.#dataStorage.loadSavedFileContent(files[option - 1])
-      console.log(content)
-      this.#content = content
-      await this.#scanner.prompt('File loaded, press enter to continue...\n')
-        .pauseUntilNext()
     }
+      
+    const content = await this.#dataStorage.loadSavedFileContent(files[option - 1])
+    console.log(content)
+    this.#content = content
+    await this.#scanner.prompt('File loaded, press enter to continue...\n')
+      .pauseUntilNext()
   }
 
   /**
@@ -127,6 +156,11 @@ class ApplicationConsoleUI {
       .pauseUntilNext()
   }
 
+  /**
+   * Runs the text statistics UI with the currently loaded content.
+   * 
+   * @returns {void}
+   */
   async #runTextStatistics () {
     if (this.#content === null) {
       await this.#scanner.prompt('No content loaded, press enter to return...\n')
