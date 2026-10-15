@@ -17,13 +17,25 @@ class TextStatConsoleUI {
     
   }
 
+  /**
+   * The programs start menu.
+   */
   async #menuStart () {
+    const maxOptionValue = this.#renderStartMenu()
+    const option = await this.#selectMenuOption(maxOptionValue)
+    await this.#actionStartMenu(option)
+  }
+
+  #renderStartMenu () {
     this.#scanner.prompt('1: Load text form file\n')
     this.#scanner.prompt('2: Manual line input\n')
     this.#scanner.prompt('3: View text statistics\n')
     this.#scanner.prompt('4: Save loaded text\n')
     this.#scanner.prompt('0: Exit\n')
-    const option = await this.#selectMenuOption(4)
+    return 4
+  }
+
+  async #actionStartMenu (option) {
     switch (option) {
     case 1:
       await this.#loadFromFileMenu()
@@ -101,7 +113,7 @@ class TextStatConsoleUI {
   async #menuTextStats () {
     const maxOptionValue = this.#renderTextStatsMenu()
     const option = await this.#selectMenuOption(7)
-    await this.#actionTextStats(option)
+    await this.#actionTextStatsMenu(option)
   }
 
   #renderTextStatsMenu () {
@@ -116,7 +128,7 @@ class TextStatConsoleUI {
     return 7
   }
 
-  async #actionTextStats (option) {
+  async #actionTextStatsMenu (option) {
     switch (option) {
     case 1:
       break
