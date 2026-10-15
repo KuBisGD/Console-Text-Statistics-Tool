@@ -1,7 +1,30 @@
+import Scanner from "@kubis/input-scanner"
+
+/**
+ * Class for statistics UI.
+ */
 class StatisticsConsoleUI {
+  /**
+   * @type {Scanner}
+   */
   #scanner
+
+  /**
+   * @type {string}
+   */
   #text
+
+  /**
+   * @type {boolean}
+   */
   #running = true
+
+  /**
+   * Creates a new statistics UI object.
+   * 
+   * @param {Scanner} scanner The input reader for the UI.
+   * @param {string} text The text to be analyzed.
+   */
   constructor (scanner, text) {
     this.#scanner = scanner
     this.#text = text
