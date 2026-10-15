@@ -95,13 +95,76 @@ class TextStatConsoleUI {
     this.#content = input.join(' ')
 
     await this.#scanner.prompt('Input loaded, press enter to continue...\n')
-        .pauseUntilNext()
+      .pauseUntilNext()
+  }
+
+  async #menuTextStats () {
+    const maxOptionValue = this.#renderTextStatsMenu()
+    const option = await this.#selectMenuOption(7)
+    await this.#actionTextStats(option)
+  }
+
+  #renderTextStatsMenu () {
+    this.#scanner.prompt('1: Character count\n')
+    this.#scanner.prompt('2: Word count\n')
+    this.#scanner.prompt('3: Sentence count\n')
+    this.#scanner.prompt('4: Word frequency\n')
+    this.#scanner.prompt('5: Average word length\n')
+    this.#scanner.prompt('6: Average sentence length\n')
+    this.#scanner.prompt('7: Text time to read\n')
+    this.#scanner.prompt('0: Back\n')
+    return 7
+  }
+
+  async #actionTextStats (option) {
+    switch (option) {
+    case 1:
+      break
+    case 2:
+      break
+    case 3:
+      break
+    case 4:
+      break
+    case 5:
+      break
+    case 6:
+      break
+    case 7:
+      break
+    case 0:
+      return
+      break
+    }
   }
 
   async #menuSaveText () {
     if (this.#content === null) {
       await this.#scanner.prompt('No content loaded, press enter to return...\n')
         .pauseUntilNext()
+      return
+    }
+
+    this.#scanner.prompt('=== Current saves ===\n')
+    for (const fileName of await this.#dataStorage.getSavedFileNames()) {
+      this.#scanner.prompt(`${fileName}\n`)
+    }
+    this.#scanner.prompt('=====================\n')
+    this.#scanner.prompt('Enter save name: ')
+    const name = await this.#getFileNameFromInput()
+    await this.#dataStorage.saveAsFile(name, this.#content)
+    await this.#scanner.prompt('Text saved, press enter to continue...\n')
+      .pauseUntilNext()
+  }
+
+  async #getFileNameFromInput () {
+    while (true) {
+      try {
+        const name = await this.#scanner.nextString()
+        return name
+      } catch {
+        this.#scanner.prompt('Enter a valid name.\n')
+      }
     }
   }
 }
