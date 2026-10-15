@@ -7,9 +7,12 @@ class StatisticsConsoleUI {
     this.#text = text
   }
 
+  /**
+   * Starts the statistics UI.
+   */
   async start () {
     while (this.#running) {
-      
+      await this.#menuTextStats()
     }
   }
 
@@ -18,7 +21,7 @@ class StatisticsConsoleUI {
    */
   async #menuTextStats () {
     const maxOptionValue = this.#renderTextStatsMenu()
-    const option = await this.#selectMenuOption(7)
+    const option = await this.#selectMenuOption(maxOptionValue)
     await this.#actionTextStatsMenu(option)
   }
 
