@@ -213,7 +213,6 @@ class StatisticsConsoleUI {
         this.#scanner.prompt(`Reading time: ${timeString}`)
         return
       } catch (error) {
-        console.log(error.message)
         this.#scanner.prompt(`Words per minute must be ${range.min} to ${range.max}\n`)
       }
     }
