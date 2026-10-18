@@ -2,7 +2,7 @@ import Scanner from '@kubis/input-scanner'
 import { TextCounter, TextStatistics } from 'glyphalyze'
 
 /**
- * @typedef {import('./TextFileContent.js').TextFileContent} TextFileContent
+ * @typedef {import('./TextFileContent.js').default} TextFileContent
  */
 
 /**
