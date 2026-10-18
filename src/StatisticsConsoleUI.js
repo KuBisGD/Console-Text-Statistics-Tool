@@ -67,6 +67,7 @@ class StatisticsConsoleUI {
    * @returns {number} The amount of options in the menu.
    */
   #renderTextStatsMenu () {
+    this.#scanner.prompt('--- Select option ---\n')
     this.#scanner.prompt('1: Character count\n')
     this.#scanner.prompt('2: Word count\n')
     this.#scanner.prompt('3: Sentence count\n')
