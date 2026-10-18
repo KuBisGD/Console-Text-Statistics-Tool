@@ -1,4 +1,5 @@
-import Scanner from "@kubis/input-scanner"
+import Scanner from '@kubis/input-scanner'
+import { TextCounter, TextStatistics } from 'glyphalyze'
 
 /**
  * Class for statistics UI.
@@ -20,6 +21,16 @@ class StatisticsConsoleUI {
   #running = true
 
   /**
+   * @type {TextCounter}
+   */
+  #counter
+
+  /**
+   * @type {TextStatistics}
+   */
+  #statistics
+
+  /**
    * Creates a new statistics UI object.
    * 
    * @param {Scanner} scanner The input reader for the UI.
@@ -28,6 +39,8 @@ class StatisticsConsoleUI {
   constructor (scanner, text) {
     this.#scanner = scanner
     this.#text = text
+    this.#counter = new TextCounter(text)
+    this.#statistics = new TextStatistics(text)
   }
 
   /**
@@ -92,12 +105,16 @@ class StatisticsConsoleUI {
   async #actionTextStatsMenu (option) {
     switch (option) {
     case 1:
+      this.#showCharacterCount()
       break
     case 2:
+      this.#showWordCount()
       break
     case 3:
+      this.#showSentenceCount()
       break
     case 4:
+      this.#showWordFrequency()
       break
     case 5:
       break
@@ -109,6 +126,32 @@ class StatisticsConsoleUI {
       this.#running = false
       return
       break
+    }
+    await this.#scanner.pauseUntilNext()
+  }
+
+  #showCharacterCount () {
+    const characterCount = this.#counter.countCharacters()
+    this.#scanner.prompt(`Character count: ${characterCount}\n`)
+  }
+
+  #showWordCount () {
+    const wordCount = this.#counter.wordCount()
+    this.#scanner.prompt(`Word count: ${wordCount}\n`)
+  }
+
+  #showSentenceCount () {
+    const sentenceCount = this.#counter.countSentences()
+    this.#scanner.prompt(`Sentence count: ${sentenceCount}\n`)
+  }
+
+  #showWordFrequency () {
+    const [WORD_INDEX, COUNT_INDEX] = [0, 1]
+    const frequencyRecord = this.#counter.wordFrequency()
+    const iterableFrequency = Object.entries(frequencyRecord)
+    iterableFrequency.sort((a, b) => b[COUNT_INDEX] - a[COUNT_INDEX])
+    for (const [word, times] of iterableFrequency) {
+      this.#scanner.prompt(`${word}: ${times}\n`)
     }
   }
 }
