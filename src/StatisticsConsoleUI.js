@@ -132,21 +132,41 @@ class StatisticsConsoleUI {
     await this.#scanner.pauseUntilNext()
   }
 
+  /**
+   * Displays the character count.
+   *
+   * @returns {void}
+   */
   #showCharacterCount () {
     const characterCount = this.#counter.countCharacters()
     this.#scanner.prompt(`Character count: ${characterCount}\n`)
   }
 
+  /**
+   * Displays the word count.
+   *
+   * @returns {void}
+   */
   #showWordCount () {
     const wordCount = this.#counter.countWords()
     this.#scanner.prompt(`Word count: ${wordCount}\n`)
   }
 
+  /**
+   * Displays the sentence count.
+   *
+   * @returns {void}
+   */
   #showSentenceCount () {
     const sentenceCount = this.#counter.countSentences()
     this.#scanner.prompt(`Sentence count: ${sentenceCount}\n`)
   }
 
+  /**
+   * Displays word frequencies in descending order.
+   *
+   * @returns {void}
+   */
   #showWordFrequency () {
     const [WORD_INDEX, COUNT_INDEX] = [0, 1]
     const frequencyRecord = this.#counter.wordFrequency()
@@ -157,16 +177,31 @@ class StatisticsConsoleUI {
     }
   }
 
+  /**
+   * Displays the average word length.
+   *
+   * @returns {void}
+   */
   #showAverageWordLength () {
     const length = this.#statistics.avgWordLength()
     this.#scanner.prompt(`Average word length: ${length.toFixed(2)} characters\n`)
   }
 
+  /**
+   * Displays the average sentence length.
+   *
+   * @returns {void}
+   */
   #showAverageSentenceLength () {
     const length = this.#statistics.avgSentenceLength()
     this.#scanner.prompt(`Average sentence length: ${length.toFixed(2)} characters\n`)
   }
 
+  /**
+   * Prompts for a reading speed and displays the estimated reading time.
+   *
+   * @returns {Promise<void>} Resolves after the reading time has been displayed.
+   */
   async #showEstimatedReadingTime () {
     const range = { min: 1, max: 1000 }
     while (true) {
@@ -183,6 +218,12 @@ class StatisticsConsoleUI {
     }
   }
 
+  /**
+   * Converts a duration in seconds to a formatted time string.
+   *
+   * @param {number} seconds The duration in seconds.
+   * @returns {string} The formatted duration.
+   */
   #getSecondsToTimeString (seconds) {
     const time = { hours: 0, minutes: 0, seconds: 0 }
     time.seconds = seconds % 60
