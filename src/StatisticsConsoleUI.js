@@ -117,15 +117,17 @@ class StatisticsConsoleUI {
       this.#showWordFrequency()
       break
     case 5:
+      this.#showAverageWordLength()
       break
     case 6:
+      this.#showAverageSentenceLength()
       break
     case 7:
+      await this.#showEstimatedReadingTime()
       break
     case 0:
       this.#running = false
       return
-      break
     }
     await this.#scanner.pauseUntilNext()
   }
@@ -136,7 +138,7 @@ class StatisticsConsoleUI {
   }
 
   #showWordCount () {
-    const wordCount = this.#counter.wordCount()
+    const wordCount = this.#counter.countWords()
     this.#scanner.prompt(`Word count: ${wordCount}\n`)
   }
 
@@ -153,6 +155,47 @@ class StatisticsConsoleUI {
     for (const [word, times] of iterableFrequency) {
       this.#scanner.prompt(`${word}: ${times}\n`)
     }
+  }
+
+  #showAverageWordLength () {
+    const length = this.#statistics.avgWordLength()
+    this.#scanner.prompt(`Average word length: ${length.toFixed(2)} characters\n`)
+  }
+
+  #showAverageSentenceLength () {
+    const length = this.#statistics.avgSentenceLength()
+    this.#scanner.prompt(`Average sentence length: ${length.toFixed(2)} characters\n`)
+  }
+
+  async #showEstimatedReadingTime () {
+    const range = { min: 1, max: 1000 }
+    while (true) {
+      try {
+        const wordsPerMinute = await this.#scanner.prompt('Enter words per minute: ').nextNumber(range)
+        const seconds = this.#statistics.readingTime(wordsPerMinute)
+        const timeString = this.#getSecondsToTimeString(seconds.toFixed(2))
+        this.#scanner.prompt(`Reading time: ${timeString}`)
+        return
+      } catch (error) {
+        console.log(error.message)
+        this.#scanner.prompt(`Words per minute must be ${range.min} to ${range.max}\n`)
+      }
+    }
+  }
+
+  #getSecondsToTimeString (seconds) {
+    const time = { hours: 0, minutes: 0, seconds: 0 }
+    time.seconds = seconds % 60
+    const minutes = (seconds - time.seconds) / 60
+    time.minutes = minutes % 60
+    time.hours = (minutes - time.minutes) / 60
+
+    let timeString = ''
+    if (time.hours !== 0) timeString += `${time.hours} hours `
+    if (time.minutes !== 0) timeString += `${time.minutes} minutes `
+    if (time.seconds !== 0) timeString += `${time.seconds} seconds`
+
+    return timeString
   }
 }
 
