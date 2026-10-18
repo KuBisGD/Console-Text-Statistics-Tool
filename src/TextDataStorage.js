@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises'
+import TextFileContent from './TextFileContent'
 
 /**
  * Class for saving and loading text content.
@@ -47,11 +48,11 @@ class TextDataStorage {
    * Loads the saved content from a file.
    * 
    * @param {name} fileName Name of the file to load.
-   * @returns {string}
+   * @returns {TextFileContent}
    */
   async loadSavedFileContent (fileName) {
     const content = await fs.readFile(`${this.#savesFolderPath}/${fileName}.txt`)
-    return content.toString()
+    return new TextFileContent(content.toString())
   }
 }
 

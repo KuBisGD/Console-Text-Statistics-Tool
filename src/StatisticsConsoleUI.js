@@ -1,5 +1,6 @@
 import Scanner from '@kubis/input-scanner'
 import { TextCounter, TextStatistics } from 'glyphalyze'
+import TextFileContent from './TextFileContent'
 
 /**
  * Class for statistics UI.
@@ -9,11 +10,6 @@ class StatisticsConsoleUI {
    * @type {Scanner}
    */
   #scanner
-
-  /**
-   * @type {string}
-   */
-  #text
 
   /**
    * @type {boolean}
@@ -34,13 +30,12 @@ class StatisticsConsoleUI {
    * Creates a new statistics UI object.
    * 
    * @param {Scanner} scanner The input reader for the UI.
-   * @param {string} text The text to be analyzed.
+   * @param {TextFileContent} text The text to be analyzed.
    */
   constructor (scanner, text) {
     this.#scanner = scanner
-    this.#text = text
-    this.#counter = new TextCounter(text)
-    this.#statistics = new TextStatistics(text)
+    this.#counter = new TextCounter(text.content)
+    this.#statistics = new TextStatistics(text.content)
   }
 
   /**

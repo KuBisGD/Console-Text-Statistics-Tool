@@ -1,9 +1,21 @@
 import Scanner from '@kubis/input-scanner'
 import TextDataStorage from './TextDataStorage.js'
 import StatisticsConsoleUI from './StatisticsConsoleUI.js'
+import TextFileContent from './TextFileContent.js'
+
+/**
+ * @typedef {import('./TextDataStorage.js').TextDataStorage} TextDataStorage
+ */
 
 class ApplicationConsoleUI {
+  /**
+   * @type {TextFileContent | null}
+   */
   #content = null
+
+  /**
+   * @type {TextDataStorage}
+   */
   #dataStorage
   #scanner
   constructor (input, output, savesFilePath) {
@@ -129,7 +141,7 @@ class ApplicationConsoleUI {
     }
       
     const content = await this.#dataStorage.loadSavedFileContent(files[option - 1])
-    console.log(content)
+
     this.#content = content
     await this.#scanner.prompt('File loaded, press enter to continue...\n')
       .pauseUntilNext()
@@ -150,7 +162,7 @@ class ApplicationConsoleUI {
       input.push(line.trim())
     }
 
-    this.#content = input.join(' ')
+    this.#content = new TextFileContent(input.join(' '))
 
     await this.#scanner.prompt('Input loaded, press enter to continue...\n')
       .pauseUntilNext()
@@ -190,7 +202,7 @@ class ApplicationConsoleUI {
     
     this.#scanner.prompt('Enter save name: ')
     const name = await this.#getFileNameFromInput()
-    await this.#dataStorage.saveAsFile(name, this.#content)
+    await this.#dataStorage.saveAsFile(name, this.#content.content)
     await this.#scanner.prompt('Text saved, press enter to continue...\n')
       .pauseUntilNext()
   }
