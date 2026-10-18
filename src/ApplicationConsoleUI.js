@@ -17,7 +17,19 @@ class ApplicationConsoleUI {
    * @type {TextDataStorage}
    */
   #dataStorage
+
+  /**
+   * @type {Scanner}
+   */
   #scanner
+
+  /**
+   * Creates a new console application UI.
+   * 
+   * @param {NodeJS.ReadableStream} input 
+   * @param {NodeJS.WritableStream} output 
+   * @param {string} savesFilePath 
+   */
   constructor (input, output, savesFilePath) {
     this.#dataStorage = new TextDataStorage(savesFilePath)
     this.#scanner = new Scanner({ input, output })
