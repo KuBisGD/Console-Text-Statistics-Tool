@@ -3,10 +3,6 @@ import TextDataStorage from './TextDataStorage.js'
 import StatisticsConsoleUI from './StatisticsConsoleUI.js'
 import TextFileContent from './TextFileContent.js'
 
-/**
- * @typedef {import('./TextDataStorage.js').TextDataStorage} TextDataStorage
- */
-
 class ApplicationConsoleUI {
   /**
    * @type {TextFileContent | null}
