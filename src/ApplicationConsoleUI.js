@@ -88,7 +88,7 @@ class ApplicationConsoleUI {
       process.exit()
       break
     default:
-        
+        throw new Error('Invalid start menu option given')
     }
   }
 
