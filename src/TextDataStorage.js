@@ -11,6 +11,15 @@ class TextDataStorage {
   #savesFolderPath
 
   /**
+   * Gets the file name extension of the stored files.
+   * 
+   * @returns {string} The file name extension including the ".".
+   */
+  static get SAVED_FILE_FORMAT () {
+    return '.txt'
+  }
+
+  /**
    * Creates a new.
    * 
    * @param {string} savesFolderPath Path to folder with saved data.
@@ -27,8 +36,8 @@ class TextDataStorage {
   async getSavedFileNames () {
     const saves = await fs.readdir(this.#savesFolderPath)
     return saves
-      .filter(name => name.includes('.txt'))
-      .map(name => name.substring(0, name.length - 4)) // Removes .txt from name
+      .filter(name => name.includes(TextDataStorage.SAVED_FILE_FORMAT))
+      .map(name => name.substring(0, name.length - TextDataStorage.SAVED_FILE_FORMAT.length)) // Removes file name extension from name
   }
 
   /**
@@ -39,7 +48,7 @@ class TextDataStorage {
    */
   async saveAsFile (fileName, content) {
     await fs.writeFile(
-      `${this.#savesFolderPath}/${fileName.trim()}.txt`,
+      `${this.#savesFolderPath}/${fileName.trim()}${TextDataStorage.SAVED_FILE_FORMAT}`,
       content
     )
   }
