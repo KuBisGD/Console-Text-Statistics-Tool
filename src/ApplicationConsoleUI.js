@@ -51,7 +51,7 @@ class ApplicationConsoleUI {
   }
 
   /**
-   * Renders the men menu options.
+   * Renders the main menu options.
    * 
    * @returns {number} Amount of options in the menu.
    */
@@ -121,7 +121,7 @@ class ApplicationConsoleUI {
   }
 
   /**
-   * Renders the file select menu
+   * Renders the file select menu based on the currently saved files.
    * 
    * @param {string[]} files List of saved file names.
    * @returns {number} The amount of options in the menu.
