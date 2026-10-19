@@ -45,8 +45,13 @@ class TextDataStorage {
    * 
    * @param {string} fileName Name without '.txt'.
    * @param {string} content Content to be placed in file.
+   * @throws {Error} If file name contains "/" or "\".
    */
   async saveAsFile (fileName, content) {
+    if (fileName.includes('/') ||fileName.includes('\\')) {
+      throw new Error('a file name must not contain "/" or "\\"')
+    }
+
     await fs.writeFile(
       `${this.#savesFolderPath}/${fileName.trim()}${TextDataStorage.SAVED_FILE_FORMAT}`,
       content
