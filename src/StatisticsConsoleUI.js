@@ -227,9 +227,9 @@ class StatisticsConsoleUI {
   #getSecondsToTimeString (seconds) {
     const time = { hours: 0, minutes: 0, seconds: 0 }
     time.seconds = seconds % 60
-    const minutes = (seconds - time.seconds) / 60
-    time.minutes = minutes % 60
-    time.hours = (minutes - time.minutes) / 60
+    const totalMinutes = (seconds - time.seconds) / 60
+    time.minutes = totalMinutes % 60
+    time.hours = (totalMinutes - time.minutes) / 60
 
     let timeString = ''
     if (time.hours !== 0) timeString += `${time.hours} hours `
