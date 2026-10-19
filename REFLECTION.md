@@ -3,7 +3,7 @@
  - Meaningful names
 
 When picking names for methods in a console application it became important to utilize one word per concept. Since most actions in one way or another repetitions of each other, menu methods are prefixed with `menu` followed by the menu name, each menu contains a `render` method that shows the options that can be selected, and an `action` method then handles the selected option for that menu.
-```js
+```JavaScript
 async #menuStart () {
   const maxOptionValue = this.#renderStartMenu()
   const option = await this.#selectMenuOption(maxOptionValue)
@@ -11,7 +11,7 @@ async #menuStart () {
 }
 ```
 This also uses intention-revealing names to make it easier to find the responsibilities of each method. Names with intention also became important when naming class properties such as `savesFolderPath` that uses a searchable and pronounceable name that is very clear with its intentions.
-```js
+```JavaScript
 class TextDataStorage {
   /**
    * @type {string}
@@ -24,14 +24,14 @@ This is not a very cute name which is something that was always avoided when nam
 
 Something that became important when building the console application was to keep the methods to a single level of abstraction. While knowing what abstraction level the code is on can be challenging breaking menu methods down to their core components and doing this for every method became a good template on how to achieve this.
 By deliberately not following the verb -> noun pattern and prefixing them with their responsibilities helped organize the code, note however that the `render` methods like `#renderTextStatsMenu` still follows the pattern.
-```js
+```JavaScript
 async #menuStart () {
   const maxOptionValue = this.#renderStartMenu()
   const option = await this.#selectMenuOption(maxOptionValue)
   await this.#actionStartMenu(option)
 }
 ```
-```js
+```JavaScript
 async #menuTextStats () {
   const maxOptionValue = this.#renderTextStatsMenu()
   const option = await this.#selectMenuOption(maxOptionValue)
@@ -41,7 +41,7 @@ async #menuTextStats () {
 This also helped the methods to do one thing each, however, this rule was deliberately broken in the `render` methods since they also return the number of options in the menu. This was done because of the `#selectMenuOption` method requires the number of options to validate the input, and the ´render´ methods are the information expert for this information.
 
 While the goal is for each method to be small making a console application that constantly requires texts to be displayed and inputs to be validates can lead to larger methods.
-```js
+```JavaScript
 async #actionStartMenu (option) {
   switch (option) {
   case 1:
@@ -64,7 +64,7 @@ async #actionStartMenu (option) {
   }
 }
 ```
-```js
+```JavaScript
 async #actionTextStatsMenu (option) {
  switch (option) {
  case 1:
@@ -98,13 +98,13 @@ async #actionTextStatsMenu (option) {
 }
 ```
 These methods only redirects the applications flow to new options but it takes a lot of space to do this. Methods not related to this type of logic are mostly smaller such as the storing and loading of text files.
-```js
+```JavaScript
 async loadSavedFileContent (fileName) {
   const content = await fs.readFile(`${this.#savesFolderPath}/${fileName}.txt`)
   return new TextFileContent(content.toString())
 }
 ```
-```js
+```JavaScript
 async saveAsFile (fileName, content) {
   await fs.writeFile(
     `${this.#savesFolderPath}/${fileName.trim()}.txt`,
@@ -117,7 +117,7 @@ The `saveAsFile()` method is also only one of two dyadic method in this applicat
  - Comments
 
 Comments are not something that is used in the code except for jsdoc commend documenting methods and classes. Most of these commend however are redundant comments that don not give more information to the user than the method name already gives.
-```js
+```JavaScript
 /**
  * Menu for loading a saved file.
  */
@@ -125,7 +125,7 @@ async #menuLoadSavedFile () { /* ... */ }
 ```
 
 This is one of the worst offender of this, the comment could be more descriptive like *"Displays the saved-files menu and loads the file selected by the user."* but even this does not add much of useful information apart from that the uses is responsible for selecting the file which is good.
-```js
+```JavaScript
 /**
  * Runs the text statistics UI with the currently loaded content.
  * 
@@ -136,7 +136,7 @@ async #runTextStatistics () { /* ... */ }
 While this is not a groundbreaking comment it gives more information about the method that cannot be found in its name, such as that it will use content that is currently loaded.
 
 One of the only instance of an inline comment in the code was in the retrieval of file names when the file name extension is removed from the text (.txt) file name.
-```js
+```JavaScript
 async getSavedFileNames () {
   const saves = await fs.readdir(this.#savesFolderPath)
   return saves
@@ -153,7 +153,7 @@ I do fell that comments that inform and explain intent is generally lacking from
  - Formatting
 
 When writing code having a vertical openness between concepts is an important part of keeping the code clean. It acts like a comma when reading code and  separates different important concepts to each other.
-```js
+```JavaScript
 #getSecondsToTimeString (seconds) {
   const time = { hours: 0, minutes: 0, seconds: 0 }
   time.seconds = seconds % 60
@@ -171,7 +171,7 @@ When writing code having a vertical openness between concepts is an important pa
 ```
 Here `timeString` is also declared just before it is used to have a smaller vertical distance in the code.
 
-```js
+```JavaScript
 #numberIsInRange (number, range = {}) {
   const { min, max } = range
 
@@ -198,7 +198,7 @@ The actual code of this application is not very complex and did therefore not re
 The class `TextFileContent` sort of acts like a data transfer object but at the same time its not really a DTO. It is true that it is an object whose soul purpose is to contain and transfer information, it only a data structure that contains one value and this was done so that a text files content does not have to be stored at multiple locations but classes can instead have a reference to the object that contains the content.
 
 When using objects "train wrecks" are avoided but method chaining is used on some occasions.
-```js
+```JavaScript
 await this.#scanner.prompt(/* ... */)
   .pauseUntilNext()
 ```
@@ -207,7 +207,7 @@ This is a common construction used in the code and along with the previously sho
  - Error-handling
 
 When handling errors in the console applications most of them stem from the user providing an invalid input.
-```js
+```JavaScript
 async #selectMenuOption (maxOptionValue) {
   while (true) {
     this.#scanner.prompt('Option: ')
@@ -223,7 +223,7 @@ async #selectMenuOption (maxOptionValue) {
 The method simply traps the user in a loop until a valid input is given, if not the error is caught, the user is prompted to give a valid input and the saga continues. The application only catches exceptions and the ones is throws are not caught since they should not be reachable and are therefore are logic errors and should crash the program.
 
 Error handling in the `Scanner` module is much more precise in its actions or rather what errors are thrown.
-```js
+```JavaScript
 /**
  * Gets the next string.
  * 
@@ -258,11 +258,11 @@ Here different types of exceptions are thrown depending on the error and each of
  - Boundaries
 
 Putting up boundaries in the code is important to keep third party interfaces from spreading inside of the code. The input is supplied form outside of the application UI class from an input and an output which can be used for later testing. The file system is also separated form ui class that requires it.
-```js
+```JavaScript
 class ApplicationConsoleUI {
   constructor (input, output, savesFilePath) {
 ```
-```js
+```JavaScript
 const ui = new ApplicationConsoleUI(process.stdin, process.stdout, SAVES_PATH)
 ```
 
