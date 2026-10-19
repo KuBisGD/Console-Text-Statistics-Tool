@@ -127,6 +127,8 @@ class StatisticsConsoleUI {
     case 0:
       this.#running = false
       return
+    default:
+      throw new Error('Invalid Text Stats menu option given')
     }
     await this.#scanner.pauseUntilNext()
   }
