@@ -11,7 +11,7 @@ class TextDataStorage {
   #savesFolderPath
 
   /**
-   * Creates a new 
+   * Creates a new.
    * 
    * @param {string} savesFolderPath Path to folder with saved data.
    */
