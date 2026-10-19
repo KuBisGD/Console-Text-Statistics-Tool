@@ -234,7 +234,8 @@ class ApplicationConsoleUI {
   async #getFileNameFromInput () {
     while (true) {
       try {
-        const name = await this.#scanner.nextString()
+        // File name must not contain / or \
+        const name = await this.#scanner.nextString({ pattern: /^[^\/\\]*$/ })
         return name
       } catch {
         this.#scanner.prompt('Enter a valid name.\n')
