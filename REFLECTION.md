@@ -135,12 +135,12 @@ async #runTextStatistics () { /* ... */ }
 ```
 While this is not a groundbreaking comment it gives more information about the method that cannot be found in its name, such as that it will use content that is currently loaded.
 
-The only instance of an inline comment in the code was in the retrieval of file names when the file name extension is removed from the text (.txt) file name.
+One of the only instance of an inline comment in the code was in the retrieval of file names when the file name extension is removed from the text (.txt) file name.
 ```js
 async getSavedFileNames () {
   const saves = await fs.readdir(this.#savesFolderPath)
   return saves
-    .filter(name => name.includes(TextDataStorage.SAVED_FILE_FORMAT))
+    .filter(name => name.endsWith(TextDataStorage.SAVED_FILE_FORMAT))
     .map(name => name.substring(0, name.length - TextDataStorage.SAVED_FILE_FORMAT.length)) // Removes file name extension from name
 }
 ```
@@ -220,9 +220,9 @@ async #selectMenuOption (maxOptionValue) {
   }
 }
 ```
-The method simply traps the user in a loop until a valid input is given, if not the error is caught, the user is prompted to give a valid input and the saga continues. The application only catches exceptions and the ones is throws are not caught since they should not be reachable and are therefore logic errors and should crash the program.
+The method simply traps the user in a loop until a valid input is given, if not the error is caught, the user is prompted to give a valid input and the saga continues. The application only catches exceptions and the ones is throws are not caught since they should not be reachable and are therefore are logic errors and should crash the program.
 
-Error handling in the `Scanner` module is much more precise in its actions.
+Error handling in the `Scanner` module is much more precise in its actions or rather what errors are thrown.
 ```js
 /**
  * Gets the next string.
@@ -253,9 +253,32 @@ async nextString (match = {}) {
 return token
 }
 ```
-Here different types of exceptions are thrown depending on the error and each of them have their own custom context.
+Here different types of exceptions are thrown depending on the error and each of them have their own custom context. Both the application and the module favor this type of handling errors over returning an "error representing" value such as `null`, `undefined`, or magic numbers (`-1`, `0`)
 
- - Gränser
- - Enhetstester
- - Klasser
+ - Boundaries
+
+Putting up boundaries in the code is important to keep third party interfaces from spreading inside of the code. The input is supplied form outside of the application UI class from an input and an output which can be used for later testing. The file system is also separated form ui class that requires it.
+```js
+class ApplicationConsoleUI {
+  constructor (input, output, savesFilePath) {
+```
+```js
+const ui = new ApplicationConsoleUI(process.stdin, process.stdout, SAVES_PATH)
+```
+
+For a larger app however the `glyphalyze` classes would not be directly instantiated inside of the `StatisticsConsoleUI` constructor but rather in its own class that provides its own api for handling statistics. The reason this was not done is because the application is only ever going to use `glyphalyze` which it is dependant on and will only use this version of the module.
+Having a files content as its own object also help when that data is shared between multiple classes instead of passing a string whats content is not readonly or have to be respected.
+
+# [{mention}: "learning or boundary tests when implemented"]
+
+ - Unit tests
+
+# [{mention}: "add when implemented"]
+
+ - Classes
+
+# [{mention}: "todo"]
+
  - System
+
+# [{mention}: "todo"]
