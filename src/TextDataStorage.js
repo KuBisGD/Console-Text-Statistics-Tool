@@ -36,7 +36,7 @@ class TextDataStorage {
   async getSavedFileNames () {
     const saves = await fs.readdir(this.#savesFolderPath)
     return saves
-      .filter(name => name.includes(TextDataStorage.SAVED_FILE_FORMAT))
+      .filter(name => name.endsWith(TextDataStorage.SAVED_FILE_FORMAT))
       .map(name => name.substring(0, name.length - TextDataStorage.SAVED_FILE_FORMAT.length)) // Removes file name extension from name
   }
 
