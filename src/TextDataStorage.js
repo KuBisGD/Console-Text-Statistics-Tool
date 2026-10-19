@@ -28,7 +28,7 @@ class TextDataStorage {
     const saves = await fs.readdir(this.#savesFolderPath)
     return saves
       .filter(name => name.includes('.txt'))
-      .map(name => name.substring(0, name.length - 4))
+      .map(name => name.substring(0, name.length - 4)) // Removes .txt from name
   }
 
   /**
