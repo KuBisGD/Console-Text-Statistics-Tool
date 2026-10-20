@@ -250,7 +250,7 @@ async nextString (match = {}) {
     throw new RangeError(`Length of '${token}' must be in range: min:${match.min} max:${match.max}`)
   }
 
-return token
+  return token
 }
 ```
 Here different types of exceptions are thrown depending on the error and each of them have their own custom context. Both the application and the module favor this type of handling errors over returning an "error representing" value such as `null`, `undefined`, or magic numbers (`-1`, `0`)
@@ -269,7 +269,7 @@ const ui = new ApplicationConsoleUI(process.stdin, process.stdout, SAVES_PATH)
 For a larger app however the `glyphalyze` classes would not be directly instantiated inside of the `StatisticsConsoleUI` constructor but rather in its own class that provides its own api for handling statistics. The reason this was not done is because the application is only ever going to use `glyphalyze` which it is dependant on and will only use this version of the module.
 Having a files content as its own object also help when that data is shared between multiple classes instead of passing a string whats content is not readonly or have to be respected.
 
-# [{mention}: "learning or boundary tests when implemented"]
+To validate and ensure that this 3rd-party module is not silently breaking parts of the application in a hypothetic future where it is updated, tests were added to check for changes in the usage of the module.
 
  - Unit tests
 
