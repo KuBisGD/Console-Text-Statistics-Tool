@@ -2,10 +2,10 @@
 
 ## Project vision
 
-The Console Text Statistics Tool aims to make it easy to explore a text from the
+The Console Text Statistics Tool aims to make it easy to explore a texts statistics from the
 command line. Users can provide text, inspect useful measures of its size and
 word usage, estimate how long it may take to read, and save texts for later.
-The application presents these actions through a simple, menu-driven console
+The application presents these actions through a simple menu-driven console
 interface.
 
 ## Requirements
@@ -49,8 +49,8 @@ For the current text, users can view:
 ## Run the application
 
 1. Download code from github.
-
-2. Install dependencies
+2. Navigate to the application directory.
+3. Install dependencies
 
 Requires Node.js and npm.
 
@@ -58,7 +58,7 @@ Requires Node.js and npm.
 npm install
 ```
 
-3. Start the application
+4. Start the application
 
 ```sh
 npm start
