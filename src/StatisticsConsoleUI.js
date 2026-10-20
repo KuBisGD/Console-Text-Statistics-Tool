@@ -204,7 +204,7 @@ class StatisticsConsoleUI {
    * @returns {Promise<void>} Resolves after the reading time has been displayed.
    */
   async #showEstimatedReadingTime () {
-    const range = { min: 1, max: 1000 }
+    const range = { min: 1, max: 2000 }
     while (true) {
       try {
         const wordsPerMinute = await this.#scanner.prompt('Enter words per minute: ').nextNumber(range)
