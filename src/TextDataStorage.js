@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises'
-import TextFileContent from './TextFileContent'
+import TextFileContent from './TextFileContent.js'
 
 /**
  * Class for saving and loading text content.
