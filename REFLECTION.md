@@ -292,7 +292,9 @@ The main UI should however have be separated into a main-main UI and a file load
 ## My module in a new roll
 
 The main takeaway form workshop-2 was that an if someone is not familiar with the Java-scanner api the usage of my module would not be as straight forwards. This however was not changes since it would not only require a rework of every public method on the class, it would also remove the familiarity that some already have towards it.
-The changes that were made came in the form of some internal refactoring of some repetitions, but the main changes was to be more strict towards inputs. The scanner now throws error if for example a range (`{ max: 1 }`) is not an actual number, before this would just be ignored. The reason this was done is because when providing a range it is assumed that the user wants to test for range and ignoring a none number (or none undefined) value could lead to silent buggs.
+The changes that were made came in the form of some internal refactoring of some repetitions, but the main changes was to be more strict towards inputs. The scanner now throws error if for example a range (`{ max: 1 }`) is not an actual number, before this would just be ignored. The reason this was done is because when providing a range it is assumed that the user wants to test for range and ignoring a none number (or none undefined) value could lead to silent buggs. 
+
+While both of there technically could break backwards compatibility changing/renaming the public api would be much more severe than making input types more strict. 
 
 ## Using another module
 
