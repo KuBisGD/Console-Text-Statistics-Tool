@@ -190,6 +190,7 @@ class ApplicationConsoleUI {
     this.#scanner.useBuffer('test-stats')
     const statsUI = new StatisticsConsoleUI(this.#scanner, this.#content)
     await statsUI.start()
+    this.#scanner.clearInput()
     this.#scanner.useBuffer('app')
   }
 
