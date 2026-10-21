@@ -1,6 +1,6 @@
 # Reflection
 
- - Meaningful names
+## Meaningful names
 
 When picking names for methods in a console application it became important to utilize one word per concept. Since most actions in one way or another repetitions of each other, menu methods are prefixed with `menu` followed by the menu name, each menu contains a `render` method that shows the options that can be selected, and an `action` method then handles the selected option for that menu.
 ```JavaScript
@@ -20,7 +20,7 @@ class TextDataStorage {
 ```
 This is not a very cute name which is something that was always avoided when naming variables.
 
- - Functions
+## Functions
 
 Something that became important when building the console application was to keep the methods to a single level of abstraction. While knowing what abstraction level the code is on can be challenging breaking menu methods down to their core components and doing this for every method became a good template on how to achieve this.
 By deliberately not following the verb -> noun pattern and prefixing them with their responsibilities helped organize the code, note however that the `render` methods like `#renderTextStatsMenu` still follows the pattern.
@@ -114,7 +114,7 @@ async saveAsFile (fileName, content) {
 ```
 The `saveAsFile()` method is also only one of two dyadic method in this application. No triads where used.
 
- - Comments
+## Comments
 
 Comments are not something that is used in the code except for jsdoc commend documenting methods and classes. Most of these commend however are redundant comments that don not give more information to the user than the method name already gives.
 ```JavaScript
@@ -141,7 +141,7 @@ async getSavedFileNames () {
   const saves = await fs.readdir(this.#savesFolderPath)
   return saves
     .filter(name => name.endsWith(TextDataStorage.SAVED_FILE_FORMAT))
-    .map(name => name.substring(0, name.length - TextDataStorage.SAVED_FILE_FORMAT.length)) // Removes file name extension from name
+    .map(name => name.substring(0, name.length## TextDataStorage.SAVED_FILE_FORMAT.length)) // Removes file name extension from name
 }
 ```
 While the comment is not required it does ease the reading of the code to not require mental math to substring the name of the text file.
@@ -150,16 +150,16 @@ The reason that i generally do not include inline comment comes from the fact th
 I do fell that comments that inform and explain intent is generally lacking from the code.
 
 
- - Formatting
+## Formatting
 
 When writing code having a vertical openness between concepts is an important part of keeping the code clean. It acts like a comma when reading code and  separates different important concepts to each other.
 ```JavaScript
 #getSecondsToTimeString (seconds) {
   const time = { hours: 0, minutes: 0, seconds: 0 }
   time.seconds = seconds % 60
-  const totalMinutes = (seconds - time.seconds) / 60
+  const totalMinutes = (seconds## time.seconds) / 60
   time.minutes = totalMinutes % 60
-  time.hours = (totalMinutes - time.minutes) / 60
+  time.hours = (totalMinutes## time.minutes) / 60
 
   let timeString = ''
   if (time.hours !== 0) timeString += `${time.hours} hours `
@@ -191,7 +191,7 @@ The vertical ordering of methods is also in the general order that they are call
 
 When formatting horizontally the only thing that i constantly keep in mind is line length. The longest line that i could find in the code is ~135 characters long and that includes a comment, the actual longest code line is closer to ~100 characters.
 
- - Objects
+## Objects
 
 The actual code of this application is not very complex and did therefore not require much complexity when it came to object and their relations. The UI classes could have a polymorphic behavior since both share a public `start()` method but interfaces do not exists in JavaScript and inheriting form a parent UI class did not feel like it added any benefit to the code.
 
@@ -204,7 +204,7 @@ await this.#scanner.prompt(/* ... */)
 ```
 This is a common construction used in the code and along with the previously shown filename filtering and formatting is an accepted use for chaining methods. This is because the methods called return only the an reference to the object that the method was called on while "train wrecks" are chains on multiple object of what could be different types. These chains are also not broken into declarations as to not violate the "Law of Demeter"
 
- - Error-handling
+## Error-handling
 
 When handling errors in the console applications most of them stem from the user providing an invalid input.
 ```JavaScript
@@ -255,7 +255,7 @@ async nextString (match = {}) {
 ```
 Here different types of exceptions are thrown depending on the error and each of them have their own custom context. Both the application and the module favor this type of handling errors over returning an "error representing" value such as `null`, `undefined`, or magic numbers (`-1`, `0`)
 
- - Boundaries
+## Boundaries
 
 Putting up boundaries in the code is important to keep third party interfaces from spreading inside of the code. The input is supplied form outside of the application UI class from an input and an output which can be used for later testing. The file system is also separated form ui class that requires it.
 ```JavaScript
@@ -271,14 +271,35 @@ Having a files content as its own object also help when that data is shared betw
 
 To validate and ensure that this 3rd-party module is not silently breaking parts of the application in a hypothetic future where it is updated, tests were added to check for changes in the usage of the module.
 
- - Unit tests
+## Unit tests
 
-# [{mention}: "add when implemented"]
+Unit tests were used to automate testing of some actions of the program. The main usage was to test the 3rd-party modules so any potential future changes to the api would be noticed faster and to be pinpointed easier. Unit tests also tests the flow of the UI that implements this module to further make sure that it functions. The main reason for the remaining UI element not having tests is because the test would be very reliant on the exact visual aspects and not the functionality, so every time a menu option would be reworded or a styling changed the tests would also have to mirror those changes.
+Together with the storage tests the tests used a testing framework to verify the results. While having simple if cases and throwing errors or assertions would also work this adds a layer of abstraction which is generally easier to work with.
 
- - Classes
+## Classes
 
-# [{mention}: "todo"]
+Classes were used to encapsulate responsibilities to individual parts of the program. To maintain a high cohesion classes like `TextDataStorage` are small and only contain the path to the saves folder. If for any reason the storage methods needed to be changes in the future this class is isolated and can be replaces with a new one that has the same public api. The only potential change would be the constructor that would instead take a database dsn an not a directory path.
+However in a future implementation of the console UI classes the file saving and loading should have been its own class and the "main" UI should only concern directing to other UIs and close the application. This is because the `ApplicationConsoleUI` now has multiple responsibilities, this was not changes time constraints as it at the time added unnecessary complexity.
+All of this hade the side effect of the `ApplicationConsoleUI` being larger than what would be ideal, in theory each menu could be implemented as its own class but this was a late thought that was never explored.
 
- - System
+The `Scanner` module was a more structured implementation comparatively. The `LineReader` reads the indata and stores it in a queue, the ``TokenBuffer`` stores token and handles multiple buffers, and finally the main `Scanner` class connects the parts and handles requested data and validations. 
 
-# [{mention}: "todo"]
+## System
+
+The applications separates aspects of its inner system in to multiple parts. The `main.js` file currently responsible for providing the saves directory and starting the console UI while he started UI handles the main application flow.
+The main UI should however have be separated into a main-main UI and a file loading/saving UI. The `StatisticsConsoleUI` should also not have instantiated the 3rd-party modules directly but rather hid them behind a custom interface that would have been injected into the classes constructor.
+
+## My module in a new roll
+
+The main takeaway form workshop-2 was that an if someone is not familiar with the Java-scanner api the usage of my module would not be as straight forwards. This however was not changes since it would not only require a rework of every public method on the class, it would also remove the familiarity that some already have towards it.
+The changes that were made came in the form of some internal refactoring of some repetitions, but the main changes was to be more strict towards inputs. The scanner now throws error if for example a range (`{ max: 1 }`) is not an actual number, before this would just be ignored. The reason this was done is because when providing a range it is assumed that the user wants to test for range and ignoring a none number (or none undefined) value could lead to silent buggs.
+
+## Using another module
+
+Using someone elses module was quite easy since core features were well documented and installation was straight forward. The module had some limitations at the time of implementation which were later fixed. This had to be accounted for when interacting with the module and some imitations were placed on the main application because of this.
+
+## AI usage
+
+AI was briefly used in the application to create some jsdoc comments on some methods, it was also used to reformat/prettify some md files. The main use however was in the creating of unit tests where The AI played a larger part in creating the tests for the application.
+
+Compared to laboration-2 where AI was used to conceptualize the modules inner workings and logic, laboration-3 did not require as complex ideas and did therefore not use AI in any meaningful capacity when creating the main program.
