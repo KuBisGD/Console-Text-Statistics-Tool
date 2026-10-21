@@ -10,14 +10,13 @@ interface.
 
 ## Requirements
 
-### Text input
+### R1 Text input
 
 - Users can enter text one line at a time. An empty line ends input, and the
   entered lines become the current text.
-- Users can load text by providing a file path.
 - The application makes the loaded text available for statistics and saving.
 
-### Text statistics
+### R2 Text statistics
 
 For the current text, users can view:
 
@@ -31,14 +30,14 @@ For the current text, users can view:
 - Estimated reading time based on a user-provided reading speed in words per
   minute
 
-### Saved texts
+### R3 Saved texts
 
 - The application saves text files in its predetermined saves folder.
 - Users can choose a name for each saved text.
 - Users can see the available saved texts and load one for analysis.
 - Saved texts use the `.txt` file extension.
 
-### Console interface
+### R4 Console interface
 
 - Users can navigate the application's features through console menus.
 - The interface provides a way to return to the previous menu and to exit the
