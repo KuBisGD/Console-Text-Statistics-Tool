@@ -1,18 +1,17 @@
 # Test Report
 
 <!--
-    Commit this file to the root of your GitHub repository, alongside your module's code.
-    It is required regardless of how you tested your module — even if your tests live in a
-    test application or use a testing framework, summarize them here.
+    Commit this file to the root of your application's GitHub repository, alongside its code.
+    Every requirement listed in your README.md needs at least one test case below. Giving each
+    requirement a short ID in the README (e.g. R1, R2) makes the "Requirement" column easy to fill
+    in and to check.
 -->
 
 ## Summary
 
-*Briefly describe how you tested your module, and why you chose that approach — clearly enough
-that someone else could carry out the same tests. What was hardest to test, and why?*
-
-*If you used a testing framework, you may link to its generated report or include screenshots of
-the test run here.*
+*Briefly describe how you tested your application – manually through its interface, automatically,
+or both – clearly enough that someone else could carry out the same tests. What was hardest to
+test, and why?*
 
 Answer:
 To test the application manual tests were used in combination with automatic unit tests. The manual tests follow the use cases to ensure that expected behavior is functional. The application was also tested gradually as new features was added the the console flow.
@@ -24,27 +23,38 @@ Manual tests where used to test the main application flow while the automatic un
 The automatic test can be executed by running `npm run test`/`npm test` the root directory of the application after installing all dependencies.
 
 
-![alt text](image.png)
+![Test results](image.png)
 
 The reason that most UI is tested manually is that the tests are dependant on the visual style of the output/options to determine if the result is correct. This was used on the statistics UI only because it is directly linked to the 3rd-party module. 
-During development testing was done manually as features got implemented, this is done because output format is not final and unit tests would have to be updated multiple times while the manual tests can quickly confirm a vague placeholder output.
+During development testing was done manually as features got implemented, this is done because output format is not final and unit tests would have to be updated multiple times while the manual tests can quickly confirm a vague placeholder output. This part was not necessarily as hard as it was annoying to test.
 
 ## Test Results
 
-<!-- **Example** (shows what a filled-in row can look like — remove this example table before
+<!-- **Example** (shows what filled-in rows can look like – remove this example table before
 submitting):
 
-| What was tested                                                        | How it was tested                                                                                                       | Result                                                                       |
-| ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| `Jpeg.load(path)` returns a `Picture` instance for a valid image file. | Automated unit test (Vitest): loaded `test-image.jpg` and checked that the return value had `getHeight()`/`getWidth()` methods. | ✅ Passed.                                                                    |
-| `Picture.getPixelAt(x, y)` with coordinates outside the image.         | Manual test via the Test-App's interface: entered a coordinate pair larger than the image's width/height and observed the output. | ❌ Didn't throw an error initially — fixed, now throws a clear exception. | -->
+| Test case                            | Requirement | Input                                                     | Expected outcome                                                   | Actual outcome                                                               |
+| ------------------------------------ | ----------- | --------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| Show temperature chart for a city    | R1          | Selected "Växjö" in the city list and clicked "Show".     | A bar chart of the last seven days' temperatures for Växjö.         | ✅ As expected.                                                              |
+| Unknown city name                    | R3          | Typed "Atlantis" in the search field and pressed Enter.   | A clear message that the city wasn't found; no chart is drawn.      | ❌ An empty chart was drawn – fixed, the message is now shown instead.       |
 
-**Your test results:**
+**Your test results:** -->
 
-| What was tested | How it was tested | Result |
-| ---------------- | ------------------ | ------- |
-| UC-01: Enter text manually | Manual test via console interface. Select option to load text line by line add enter a text. Enter a blank line and observe the result. | ✅ Passed. |
-| UC-02: Load a saved text | **Manual test via console interface.** Select option to load saved text, if any exits select it and continue. Observe output. **Automated unit test (Vitest):** Tests the `TextDataStorage` class against pre-saved files. | ✅ Passed. |
-| UC-03: View text statistics | **Manual test via console interface:** Start application, load text and select the text statistics option. go through each option and observe the output. **Automated unit test (Vitest):** Tests the statistics module directly and also runs through the StatisticsUI flow and validates the output. | ✅ Passed. |
-| UC-04: Save the current text | **Manual test via console interface:** Manually load text from input and select the save option the in main menu. Save the text and close the restart the application, load the saved file and observe if it exits.   **Automated unit test (Vitest):** Tests the TextDataStorage class by saving files in a temporary directory. | ✅ Passed. |
-| UC-05: Exit the application | **Manual test via console interface:** Select the exit option in the start menu and observe the application closing | ✅ Passed. |
+| Test case | Requirement | Input | Expected outcome | Actual outcome |
+| --------- | ----------- | ----- | ---------------- | -------------- |
+| Text can be provided and saved | R1 | Selected load form line and typed in "Hello world!", followed by "Goodbye world." and then a  "" (blank line) | Message confirming loaded text. | ✅ As expected. |
+| Statistics can be shown | R2 | Use previously loaded text and navigate to statistics menu | Correct statistics for "Hello world! Goodbye world." | ✅ As expected. |
+| Loaded text can be saved | R3 | Navigate to save menu and save the currently loaded text with the name "testing_save" | Confirmation message is shown and new save file can now be found when loading saves | ✅ As expected |
+| Console navigation | R4 | Was tested in previous cases but now enter an invalid menu option anywhere (ex, -1 or "kamel") | Prompt to reenter a valid input is shown | ✅ As expected |
+
+## Known Issues in Third-Party Modules
+
+*List any flaws you found in the other student's module that affected your application, how they
+show up, and how you handled them (e.g. a workaround, or a link to an issue you filed in the
+module's repository). Write "None found" if there weren't any.*
+
+Answer:
+At the time of implementation the module had some limitations regarding new lines counting as a new sentence and usage of `Mr.` similar constricts would also end a sentence. The first limitation was solved by not saving the text as multiline by default but rather taking multiple lines and saving them as one line. It is however possible to work around this fix by for example editing the a saved file. The second limitation was not fixed in the application code.
+When calculating the estimated time to read a text invalid words per minute times were not handled well and hade to be validated by the main application instead.
+
+All issues were known at the time of implementation and appears to have been fixed in a later update that was not used in this application.
